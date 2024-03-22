@@ -1,1 +1,1 @@
-C:\Users\g.debreu\lily-srs-template\target\aarch64-skyline-switch\release\libsmashline_test.so: C:\Users\g.debreu\lily-srs-template\src\EDIT\mod.rs C:\Users\g.debreu\lily-srs-template\src\lib.rs
+C:\Users\supre\Documents\DotNet\SmashCustomScripts\target\aarch64-skyline-switch\release\libsmashline_test.so: C:\Users\supre\Documents\DotNet\SmashCustomScripts\src\EDIT\mod.rs C:\Users\supre\Documents\DotNet\SmashCustomScripts\src\lib.rs
