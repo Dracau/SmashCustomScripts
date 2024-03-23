@@ -15,9 +15,13 @@
 
 mod Ganondorf;
 mod Hero;
+mod Incineroar;
+mod DRMario;
 
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
     Ganondorf::install();
 	Hero::install();
+	Incineroar::install();
+	DRMario::install();
 }
