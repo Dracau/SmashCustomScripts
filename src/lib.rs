@@ -13,9 +13,11 @@
     clippy::borrow_interior_mutable_const
 )]
 
-mod EDIT;
+mod Ganondorf;
+mod Hero;
 
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
-    EDIT::install();
+    Ganondorf::install();
+	Hero::install();
 }
