@@ -18,6 +18,7 @@ mod Hero;
 mod Incineroar;
 mod DRMario;
 mod Greninja;
+mod DonkeyKong;
 
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
@@ -26,4 +27,5 @@ pub fn main() {
 	Incineroar::install();
 	DRMario::install();
 	Greninja::install();
+	DonkeyKong::install();
 }
