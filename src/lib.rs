@@ -13,6 +13,7 @@
     clippy::borrow_interior_mutable_const
 )]
 
+mod Everyone;
 mod Ganondorf;
 mod Hero;
 mod Incineroar;
@@ -23,6 +24,7 @@ mod Wolf;
 
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
+	Everyone::install();
     Ganondorf::install();
 	Hero::install();
 	Incineroar::install();
