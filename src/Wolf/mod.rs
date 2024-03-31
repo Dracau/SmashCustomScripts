@@ -13,50 +13,57 @@ use {
 use skyline::hooks::{Region, getRegionAddress};
 use skyline::libc::*;
 
-static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
-const FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT : i32 = 0x20000eb;
+static mut WOLF_NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
+pub const FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT : i32 = 0x200000e0;
 
-unsafe extern "C" fn wolf_game_specialsend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.module_accessor;
-    
-    WorkModule::on_flag(agent.module_accessor, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT);
+unsafe extern "C" fn wolf_game_attackairlw(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
 
-    frame(lua_state, 2.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 270, 100, 0, 20, 4.0, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 15.0, 28, 85, 0, 30, 7.0, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 4.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        AttackModule::clear_all(boma);
+        WorkModule::on_flag(agent.module_accessor, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 270, 90, 0, 6, 5.0, 0.0, 6.5, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 15.0, 270, 90, 0, 6, 7.0, 0.0, 2.0, 0.5, None, None, None, 1.0, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 7.0);
+    wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        AttackModule::clear_all(agent.module_accessor);
     }
-    frame(lua_state, 10.0);
+    frame(agent.lua_state_agent, 36.0);
     if macros::is_excute(agent) {
-        JostleModule::set_status(boma, true);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
-#[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
-pub unsafe fn notify_log_event_collision_hit_replace(fighter_manager: *mut smash::app::FighterManager, attacker_id: u32, defender_id: u32, move_type: f32, arg5: i32, move_type_again: bool, fighter: &mut L2CAgentBase) -> u64 {
+
+#[skyline::hook(offset = WOLF_NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
+pub unsafe fn wolf_notify_log_event_collision_hit_replace(fighter_manager: *mut smash::app::FighterManager, attacker_id: u32, defender_id: u32, move_type: f32, arg5: i32, move_type_again: bool, fighter: &mut L2CAgentBase) -> u64 {
+    
+    println!("Wolf Hook !");
+    
     let attacker_boma = sv_battle_object::module_accessor(attacker_id);
     let defender_boma = sv_battle_object::module_accessor(defender_id);
     let attacker_kind = sv_battle_object::kind(attacker_id);
     let defender_kind = sv_battle_object::kind(defender_id);
-    // if search_hit flag is on
-    if WorkModule::is_flag(attacker_boma, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT) {
-        // add velocity
-        KineticModule::add_speed(attacker_boma, &Vector3f{ x: -3.0, y: 3.0, z: 0.0 });
-        // disable flag
-        WorkModule::off_flag(attacker_boma, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT);
-        // if thing being hit is a fighter
-        if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            // give fighter being hit sticky bomb
-            ItemModule::have_item(defender_boma, smash::app::ItemKind(*ITEM_KIND_CHEWING), 0, 0, false, false);
+    
+    if attacker_kind == FIGHTER_KIND_WOLF{
+        // if search_hit flag is on
+        if WorkModule::is_flag(attacker_boma, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT) {
+            println!("Wolf hook : Found cancel flag");
+            // add velocity
+            //KineticModule::add_speed(attacker_boma, &Vector3f{ x: 0.0, y: 2.5, z: 0.0 });
+            StatusModule::change_status_request_from_script(attacker_boma, FIGHTER_STATUS_KIND_FALL.into(), false.into());
+
+            // disable flag
+            WorkModule::off_flag(attacker_boma, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT);
+            // if thing being hit is a fighter
+            if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                // give fighter being hit sticky bomb
+                //ItemModule::have_item(defender_boma, smash::app::ItemKind(*ITEM_KIND_CHEWING), 0, 0, false, false);
+            }
         }
     }
     
@@ -64,7 +71,7 @@ pub unsafe fn notify_log_event_collision_hit_replace(fighter_manager: *mut smash
 }
 
 unsafe extern "C" fn wolf_frame(fighter: &mut L2CFighterCommon) {
-    if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_s_end") {
+    if MotionModule::motion_kind(fighter.module_accessor) != hash40("attack_air_lw") {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_WOLF_INSTANCE_WORK_ID_FLAG_SEARCH_HIT);
     }
 }
@@ -86,22 +93,40 @@ static OFFSET_SEARCH_CODE: &[u8] = &[
     0xfb, 0x03, 0x00, 0xaa  //.text:0000007100675A44                 MOV             X27, X0
 ];
 
+unsafe extern "C" fn wolf_game_attack13(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 55, 0, 0, 40, 2.5, 0.0, 9.0, 2.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 55, 0, 0, 40, 2.8, 0.0, 9.0, 6.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 4.0, 55, 0, 0, 40, 4.0, 0.0, 9.0, 11.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+
+        //if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_ATTACK){
+            StatusModule::change_status_request_from_script(agent.module_accessor, FIGHTER_STATUS_KIND_ATTACK_S3.into(), false.into());
+        //}
+    }
+}
+
 pub fn install() {
     unsafe {
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
         let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
         let text = std::slice::from_raw_parts(text_ptr, text_size);
         if let Some(offset) = find_subsequence(text, OFFSET_SEARCH_CODE) {
-            NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET = offset;
+            WOLF_NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET = offset;
         }
     }
 
     Agent::new("wolf")
-    .game_acmd("game_specialsend", wolf_game_specialsend)
+    .game_acmd("game_attackairlw", wolf_game_attackairlw)
+    .game_acmd("game_attack13", wolf_game_attack13)
     .on_line(Main, wolf_frame)
     .install();
 
     skyline::install_hook!(
-        notify_log_event_collision_hit_replace
+        wolf_notify_log_event_collision_hit_replace
     );
 }

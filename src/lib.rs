@@ -22,6 +22,7 @@ mod Greninja;
 mod DonkeyKong;
 mod Wolf;
 
+
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
 	Everyone::install();
