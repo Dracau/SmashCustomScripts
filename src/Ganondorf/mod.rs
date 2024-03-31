@@ -13,7 +13,7 @@ use {
 use skyline::hooks::{getRegionAddress, Region};
 
 pub const GANON_ONE_WINGED_ACTIVATED : i32 = 0x200000df;
-const damage_for_one_winged : f32 = 50.0;
+const damage_for_one_winged : f32 = 80.0;
 const one_winged_armor : f32 = 35.0;
 
 
@@ -69,8 +69,8 @@ unsafe extern "C" fn ganon_game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-            macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 22.0, 270, 93, 0, 20, 4.0, -1.1, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 23.0, 270, 93, 0, 20, 5.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);    
+            macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 17.0, 270, 93, 0, 20, 4.0, -1.1, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 18.0, 270, 93, 0, 20, 5.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);    
         } else{
             macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 17.0, 361, 93, 0, 20, 4.0, -1.1, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 18.0, 361, 93, 0, 20, 5.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
@@ -178,6 +178,7 @@ unsafe extern "C" fn ganon_game_attacks4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn ganon_damage_reading(agent: &mut L2CAgentBase) {
     if DamageModule::damage(agent.module_accessor, 0) >= damage_for_one_winged && !WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED) {
         WorkModule::on_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED);
+        WorkModule::set_int(agent.module_accessor,4,*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
         println!("Ganon gets a wing !")
     }
     if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
