@@ -14,7 +14,7 @@ use skyline::hooks::{getRegionAddress, Region};
 
 pub const GANON_ONE_WINGED_ACTIVATED : i32 = 0x200000df;
 const damage_for_one_winged : f32 = 80.0;
-const one_winged_armor : f32 = 35.0;
+const one_winged_armor : f32 = 15.0;
 
 
 unsafe extern "C" fn ganon_game_attack11(agent: &mut L2CAgentBase) {
@@ -86,9 +86,6 @@ unsafe extern "C" fn ganon_game_attackairf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn ganon_game_attackhi4(agent: &mut L2CAgentBase) {
-    if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
-    }
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, -1);
@@ -96,6 +93,10 @@ unsafe extern "C" fn ganon_game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
+        }
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -106,13 +107,13 @@ unsafe extern "C" fn ganon_game_attackhi4(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0);
+        }
     }
 }
 
 unsafe extern "C" fn ganon_game_attacklw4(agent: &mut L2CAgentBase) {
-    if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
-    }
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, -1);
@@ -120,6 +121,9 @@ unsafe extern "C" fn ganon_game_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
+        }
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -141,13 +145,13 @@ unsafe extern "C" fn ganon_game_attacklw4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         JostleModule::set_status(agent.module_accessor, true);
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0);
+        }
     }
 }
 
 unsafe extern "C" fn ganon_game_attacks4(agent: &mut L2CAgentBase) {
-    if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
-    }
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, -1);
@@ -155,6 +159,9 @@ unsafe extern "C" fn ganon_game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
+        }
     }
     frame(agent.lua_state_agent, 29.0);
     if macros::is_excute(agent) {
@@ -171,6 +178,9 @@ unsafe extern "C" fn ganon_game_attacks4(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+        if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0);
+        }
     }
 }
 
