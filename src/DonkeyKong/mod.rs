@@ -13,8 +13,8 @@ use {
 unsafe extern "C" fn donkey_frame_sizemanagement(agent: &mut L2CAgentBase) {
     let currentSize = PostureModule::scale(agent.module_accessor);
 
-    let maxSize = 1.33;
-    let minSize = 0.75;
+    let maxSize = 1.45;
+    let minSize = 0.65;
 
     if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI){
         PostureModule::set_scale(agent.module_accessor, (currentSize*1.04).clamp(currentSize, maxSize), false)
