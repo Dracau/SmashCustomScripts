@@ -22,6 +22,7 @@ mod Greninja;
 mod DonkeyKong;
 mod Wolf;
 mod Mewtwo;
+mod Ridley;
 
 
 #[skyline::main(name = "smashline_test")]
@@ -35,4 +36,5 @@ pub fn main() {
 	DonkeyKong::install();
 	Wolf::install();
 	Mewtwo::install();
+	Ridley::install();
 }
