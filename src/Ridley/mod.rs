@@ -163,10 +163,10 @@ unsafe extern "C" fn specialhi_main(agent: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_float(ppBVar6, 0.25, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_LR_STICK_X);
     WorkModule::set_float(ppBVar6, 0.625, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_DIR_STICK_X);
     WorkModule::set_float(ppBVar6, 18.0, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_DIR_MUL);
-    WorkModule::set_float(ppBVar6, 1.0, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_PASS_MUL);
+    WorkModule::set_float(ppBVar6, 1.4/*1.0*/, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_PASS_MUL);
     WorkModule::set_float(ppBVar6, 0.5, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_AIR_ACCEL_Y);
     WorkModule::set_float(ppBVar6, 0.66, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_AIR_START_X_MUL);
-    WorkModule::set_float(ppBVar6, 0.95, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_AIR_PASS_MUL);
+    WorkModule::set_float(ppBVar6, 1.35/*0.95*/, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_AIR_PASS_MUL);
     WorkModule::set_float(ppBVar6, 0.6, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_FALL_X_MUL);
 
     WorkModule::set_int(ppBVar6, 30, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_CONST_LANDING_FRAME);
@@ -210,9 +210,9 @@ unsafe extern "C" fn specialhi_end(agent: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     use smashline::Pre;
     Agent::new("ridley")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_main)
-        //.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_main_loop)
+    //.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_main_loop)
         .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_pre)
+        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_main)
         .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, specialhi_end)
         .game_acmd("game_specialhi", game_specialhi)
         .game_acmd("game_specialairhi", game_specialairhi)
