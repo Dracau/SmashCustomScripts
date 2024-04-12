@@ -15,6 +15,8 @@ use skyline::hooks::{getRegionAddress, Region};
 pub const GANON_ONE_WINGED_ACTIVATED : i32 = 0x200000df;
 const damage_for_one_winged : f32 = 80.0;
 const one_winged_armor : f32 = 15.0;
+pub static mut WING_FX_DELAY : u64 = 20;
+static mut WING_FX_CURRENT: [u64; 8] = [0; 8];
 
 
 unsafe extern "C" fn ganon_game_attack11(agent: &mut L2CAgentBase) {
@@ -191,8 +193,15 @@ unsafe extern "C" fn ganon_damage_reading(agent: &mut L2CAgentBase) {
         println!("Ganon gets a wing !")
     }
     if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("havel"), 0, 0, -1,0, 0, 0, 0.66, true);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("haver"), 0, 0, -1,0, 0, 0, 0.66, true);
+        let entry_id = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+
+        WING_FX_CURRENT[entry_id] = WING_FX_CURRENT[entry_id] + 1;
+        if WING_FX_CURRENT[entry_id] >= WING_FX_DELAY
+        {
+            WING_FX_CURRENT[entry_id] = 0;
+            macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("havel"), 0, 0, -1,0, 0, 0, 0.66, true);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("haver"), 0, 0, -1,0, 0, 0, 0.66, true);
+        }
     }
 }
 
