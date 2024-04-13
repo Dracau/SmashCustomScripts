@@ -14,17 +14,6 @@ static mut mewtwoPosX: [f32; 8] = [0.0; 8];
 static mut mewtwoPosY: [f32; 8] = [0.0; 8];
 static mut mewtwoPosZ: [f32; 8] = [0.0; 8];
 
-unsafe extern "C" fn mewtwo_frame_teleport(agent: &mut L2CAgentBase) {
-
-    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW){
-    }
-    else if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI){
-        let entry_id = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        KineticModule::set_consider_ground_friction(agent.module_accessor, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        PostureModule::set_pos(agent.module_accessor, &Vector3f{ x: mewtwoPosX[entry_id], y: mewtwoPosY[entry_id], z: mewtwoPosZ[entry_id] });
-    }
-}
-
 unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
