@@ -13,30 +13,32 @@
     clippy::borrow_interior_mutable_const
 )]
 
-mod Everyone;
+//mod Everyone;
 mod Ganondorf;
 mod Hero;
 mod Incineroar;
+mod Mario;
 mod DRMario;
 mod Greninja;
 mod DonkeyKong;
 mod Wolf;
 mod Mewtwo;
 mod Ridley;
-mod DonkeyKongBarrel;
+//mod DonkeyKongBarrel;
 
 
 #[skyline::main(name = "smashline_test")]
 pub fn main() {
-	Everyone::install();
+	//Everyone::install();
     Ganondorf::install();
 	Hero::install();
 	Incineroar::install();
+	Mario::install();
 	DRMario::install();
 	Greninja::install();
 	DonkeyKong::install();
 	Wolf::install();
 	Mewtwo::install();
 	Ridley::install();
-	DonkeyKongBarrel::install();
+	//DonkeyKongBarrel::install();
 }

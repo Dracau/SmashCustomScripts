@@ -11,6 +11,11 @@ use {
 };
 
 unsafe extern "C" fn donkey_frame_sizemanagement(agent: &mut L2CAgentBase) {
+
+    if StatusModule::status_kind(agent.module_accessor) == FIGHTER_STATUS_KIND_DEAD{
+        return;
+    }
+
     let currentSize = PostureModule::scale(agent.module_accessor);
 
     let maxSize = 1.45;

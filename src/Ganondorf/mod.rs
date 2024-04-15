@@ -16,32 +16,32 @@ pub const GANON_ONE_WINGED_ACTIVATED : i32 = 0x200000df;
 const damage_for_one_winged : f32 = 80.0;
 const one_winged_armor : f32 = 15.0;
 const wing_warlock_rate : f32 = 1.75;
-pub static mut WING_FX_DELAY : u64 = 12;
+pub static mut WING_FX_DELAY : u64 = 15;
 static mut WING_FX_CURRENT: [u64; 8] = [0; 8];
 
 
 unsafe extern "C" fn ganon_game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     
-    if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, one_winged_armor);
-    }
+    
 
     frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(agent, 0.8);
 
-    shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR,
-        0, //ID
-        Hash40::new("top"), //Bone
-        5, //Size
-        0, 12, 19, //Pos 1
-        0, 0, 0, //Pos 2
-        1.35, //Damage Mult
-        1.5, //Speed Mult
-        135, //Max Damage
-        false, //??
-        5.0, //Lifetime Mult
-        *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    if WorkModule::is_flag(agent.module_accessor, GANON_ONE_WINGED_ACTIVATED){
+        shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR,
+            0, //ID
+            Hash40::new("top"), //Bone
+            5, //Size
+            0, 12, 19, //Pos 1
+            0, 0, 0, //Pos 2
+            1.35, //Damage Mult
+            1.5, //Speed Mult
+            135, //Max Damage
+            false, //??
+            5.0, //Lifetime Mult
+            *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
     
     frame(lua_state, 8.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -334,6 +334,7 @@ unsafe extern "C" fn ganon_damage_reading(agent: &mut L2CAgentBase) {
         if WING_FX_CURRENT[entry_id] >= WING_FX_DELAY
         {
             WING_FX_CURRENT[entry_id] = 0;
+            //macros::EFFECT_FOLLOW(agent, Hash40::new("edge_shadowflare_beam"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("havel"), 0, 0, -1,0, 0, 0, 0.66, true);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_appeal_aura"), Hash40::new("haver"), 0, 0, -1,0, 0, 0, 0.66, true);
         }
