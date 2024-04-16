@@ -15,7 +15,7 @@ use skyline::hooks::{getRegionAddress, Region};
 pub const GANON_ONE_WINGED_ACTIVATED : i32 = 0x200000df;
 const damage_for_one_winged : f32 = 80.0;
 const one_winged_armor : f32 = 15.0;
-const wing_warlock_rate : f32 = 1.75;
+const wing_warlock_rate : f32 = 2.0;
 pub static mut WING_FX_DELAY : u64 = 15;
 static mut WING_FX_CURRENT: [u64; 8] = [0; 8];
 
