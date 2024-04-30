@@ -24,11 +24,7 @@ mod DonkeyKong;
 mod Wolf;
 mod Mewtwo;
 mod Ridley;
-<<<<<<< Updated upstream
-
-=======
 mod Jigglypuff;
->>>>>>> Stashed changes
 //mod DonkeyKongBarrel;
 
 
@@ -45,10 +41,6 @@ pub fn main() {
 	Wolf::install();
 	Mewtwo::install();
 	Ridley::install();
-<<<<<<< Updated upstream
-
-=======
 	Jigglypuff::install();
->>>>>>> Stashed changes
 	//DonkeyKongBarrel::install();
 }

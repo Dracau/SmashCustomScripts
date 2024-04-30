@@ -117,8 +117,7 @@ unsafe extern "C" fn mewtwo_frame(agent: &mut L2CAgentBase) {
     if SPOT_FX_CURRENT[entry_id] >= SPOT_FX_DELAY && mewtwoSetPos[entry_id]
     {
         SPOT_FX_CURRENT[entry_id] = 0;
-        EffectModule::req(agent.module_accessor, Hash40::new("mewtwo_pk_attack_g"), &mut Vector3f{x:mewtwoPosX[entry_id], y:mewtwoPosY[entry_id] + 7.5, z:mewtwoPosZ[entry_id]}, &mut Vector3f{x:45.0, y:0.0, z:0.0}, 0.66, 0, 1, false, 0);
-        //EffectModule::req(agent.module_accessor, Hash40::new("mewtwo_pk_attack_g"), &mut Vector3f{x:pos.x, y:pos.y, z:pos.z}, &mut Vector3f{x:0.0, y:0.0, z:0.0}, 0.66, 0, 1, false, 0);
+        EffectModule::req(agent.module_accessor, Hash40::new("mewtwo_pk_attack_g"), &mut Vector3f{x:mewtwoPosX[entry_id], y:mewtwoPosY[entry_id] + 7.5, z:mewtwoPosZ[entry_id]}, &mut Vector3f{x:0.0, y:0.0, z:0.0}, 0.66, 0, 1, false, 0);
     }
 }
 
