@@ -17,14 +17,18 @@
 mod Ganondorf;
 mod Hero;
 mod Incineroar;
-mod Mario;
+//mod Mario;
 mod DRMario;
 mod Greninja;
 mod DonkeyKong;
 mod Wolf;
 mod Mewtwo;
 mod Ridley;
+<<<<<<< Updated upstream
 
+=======
+mod Jigglypuff;
+>>>>>>> Stashed changes
 //mod DonkeyKongBarrel;
 
 
@@ -34,13 +38,17 @@ pub fn main() {
     Ganondorf::install();
 	Hero::install();
 	Incineroar::install();
-	Mario::install();
+	//Mario::install();
 	DRMario::install();
 	Greninja::install();
 	DonkeyKong::install();
 	Wolf::install();
 	Mewtwo::install();
 	Ridley::install();
+<<<<<<< Updated upstream
 
+=======
+	Jigglypuff::install();
+>>>>>>> Stashed changes
 	//DonkeyKongBarrel::install();
 }
